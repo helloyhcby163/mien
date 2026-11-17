@@ -1,0 +1,54 @@
+{
+  "skin_scale": 2,
+  "face": {
+    "x": 8,
+    "y": 8,
+    "size": 8
+  },
+  "color": [
+    80,
+    40,
+    20
+  ],
+  "states": {
+    "flat": {
+      "x": 10.9,
+      "y": 14.2,
+      "w": 2.05,
+      "h": 2.5,
+      "curve": 0.5,
+      "open_h": 0.6,
+      "thickness": 0.067
+    },
+    "smile": {
+      "x": 10.9,
+      "y": 14.1,
+      "w": 2.05,
+      "h": 2.5,
+      "curve": -0.48,
+      "open_h": 0.6,
+      "thickness": 0.079
+    },
+    "sad": {
+      "x": 10.9,
+      "y": 14.1,
+      "w": 2.05,
+      "h": 2.5,
+      "curve": 0.5,
+      "open_h": 0.6,
+      "thickness": 0.08
+    },
+    "open": {
+      "x": 10.9,
+      "y": 13.8,
+      "w": 2.05,
+      "h": 2.4,
+      "curve": 0.5,
+      "open_h": 0.66,
+      "thickness": 0.08
+    }
+  },
+  "mouth_offset_x": 0.0,
+  "mouth_offset_y": 2.5614035,
+  "mouth_scale": 0.32258773
+}
