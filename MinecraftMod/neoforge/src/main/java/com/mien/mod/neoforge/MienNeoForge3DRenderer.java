@@ -24,14 +24,14 @@ import org.joml.Matrix4f;
  * 通过 EntityRenderersEvent.AddLayers 给玩家渲染器追加 FeatureRenderer。
  */
 public final class MienNeoForge3DRenderer extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
-    // 头部方块在模型像素空间：x/z 为 -4..4，y 为 -8..0（y 轴向下），脸部正前方为 z = -4。
-    private static final float FACE_CENTER_Y = -4.0F;
-    private static final float FACE_HALF_SIZE = 4.0F;
-    private static final float FACE_Z = -4.0F;
+    // 头部方块在模型像素空间：x/z 为 -4..4，y 为 -8..0（y 轴向下），脸部正前方为 z = -4 像素。
+    private static final float FACE_Z = 4.0F;
     // 原版 ModelPart$Cuboid 构建顶点时统一除以 16，这里用同样的比例把像素坐标换算为方块坐标。
     private static final float MODEL_SCALE = 1.0F / 16.0F;
-    // 0.1 像素（约 0.00625 方块）的外移量，足以避免与脸部皮肤 Z-fighting。
-    private static final float FACE_OFFSET = 0.1F;
+    // 照抄原版 CapeFeatureRenderer：matrices.translate(0.0F, 0.0F, 0.125F) 的深度外移量（方块单位）。
+    private static final float DEPTH_OFFSET = 0.125F;
+
+    private static String lastLogged = "";
 
     private MienNeoForge3DRenderer(FeatureRendererContext<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> context) {
         super(context);
@@ -56,38 +56,54 @@ public final class MienNeoForge3DRenderer extends FeatureRenderer<AbstractClient
         if (entity.isInvisible()) {
             return;
         }
-        if (!MienRenderHelper.hasMouthTexture(MinecraftClient.getInstance(), MienRenderHelper.currentState)) {
+        String state = MienRenderHelper.currentState;
+        if (!MienRenderHelper.hasMouthTexture(MinecraftClient.getInstance(), state)) {
             return;
         }
 
-        Identifier texture = MienRenderHelper.getMouthTexture(MienRenderHelper.currentState);
+        MienConfig config = MienConfig.getInstance();
+        MienConfig.StateData data = MienRenderHelper.getStateData(state);
+        if (config == null || config.face == null || data == null) {
+            return;
+        }
+
+        // 皮肤 64x64 空间的 x / y 映射到头部模型像素空间：
+        // 脸部左/上边缘 face.x / face.y 对应模型 x = -size/2、y = -size，幅度不变。
+        float centerX = (data.x - config.face.x) - config.face.size / 2.0F;
+        float centerY = (data.y - config.face.y) - config.face.size;
+        float halfWidth = data.w / 2.0F;
+        float halfHeight = data.h / 2.0F;
+
+        Identifier texture = MienRenderHelper.getMouthTexture(state);
         VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(texture));
 
         matrices.push();
         // 进入头部部件局部空间，跟随头部俯仰与左右转动。
         this.getContextModel().head.rotate(matrices);
 
-        // 来自调参界面的参数：偏移单位为皮肤像素，缩放围绕脸部中心。
-        MienConfig config = MienConfig.getInstance();
-        float scale = config == null ? 1.0F : config.getMouthScale();
-        float offsetX = config == null ? 0.0F : config.mouth_offset_x;
-        float offsetY = config == null ? 0.0F : config.mouth_offset_y;
-
-        matrices.translate(0.0F, FACE_CENTER_Y * MODEL_SCALE, 0.0F);
-        matrices.translate(offsetX * MODEL_SCALE, offsetY * MODEL_SCALE, 0.0F);
-        matrices.scale(scale, scale, scale);
+        // 先平移到嘴巴中心，再单独沿 -Z 外移；深度不参与任何缩放，避免缩放后陷进头部导致消失。
+        matrices.translate(centerX * MODEL_SCALE, centerY * MODEL_SCALE, -(FACE_Z * MODEL_SCALE + DEPTH_OFFSET));
 
         MatrixStack.Entry entry = matrices.peek();
         Matrix4f positionMatrix = entry.getPositionMatrix();
-        // 脸部所在平面为 z = -4 像素，再向外偏移 0.1 像素避免 Z-fighting。
-        float z = (FACE_Z - FACE_OFFSET) * MODEL_SCALE;
-        float half = FACE_HALF_SIZE * MODEL_SCALE;
+        float halfW = halfWidth * MODEL_SCALE;
+        float halfH = halfHeight * MODEL_SCALE;
+
+        if (!lastLogged.equals(state + data.x + "," + data.y + "," + data.w + "," + data.h)) {
+            lastLogged = state + data.x + "," + data.y + "," + data.w + "," + data.h;
+            System.out.println("[Mien] 3D state=" + state
+                    + " x=" + data.x + " y=" + data.y + " w=" + data.w + " h=" + data.h
+                    + " -> center=(" + centerX + ", " + centerY + ")px"
+                    + " half=(" + halfW + ", " + halfH + ")block"
+                    + " z=" + -(FACE_Z * MODEL_SCALE + DEPTH_OFFSET)
+                    + " matrix=" + positionMatrix);
+        }
 
         // 顶点顺序与 ModelPart$Cuboid 的 -Z（脸部）面一致：左上 → 右上 → 右下 → 左下。
-        vertex(buffer, entry, positionMatrix, -half, -half, z, 0.0F, 0.0F, light);
-        vertex(buffer, entry, positionMatrix, half, -half, z, 1.0F, 0.0F, light);
-        vertex(buffer, entry, positionMatrix, half, half, z, 1.0F, 1.0F, light);
-        vertex(buffer, entry, positionMatrix, -half, half, z, 0.0F, 1.0F, light);
+        vertex(buffer, entry, positionMatrix, -halfW, -halfH, 0.0F, 0.0F, 0.0F, light);
+        vertex(buffer, entry, positionMatrix, halfW, -halfH, 0.0F, 1.0F, 0.0F, light);
+        vertex(buffer, entry, positionMatrix, halfW, halfH, 0.0F, 1.0F, 1.0F, light);
+        vertex(buffer, entry, positionMatrix, -halfW, halfH, 0.0F, 0.0F, 1.0F, light);
 
         matrices.pop();
     }

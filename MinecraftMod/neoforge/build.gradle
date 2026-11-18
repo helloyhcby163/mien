@@ -7,6 +7,18 @@ architectury {
     neoForge()
 }
 
+loom {
+    runs {
+        client {
+            // Java 24+ 对 sun.misc.Unsafe 内存访问发出终端弃用警告（Gson 等库触发），
+            // 这里按官方提示放行，避免启动日志出现警告；低版本 JVM 不认识该参数，直接跳过。
+            if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_24)) {
+                vmArgs "--sun-misc-unsafe-memory-access=allow"
+            }
+        }
+    }
+}
+
 configurations {
     common {
         canBeResolved = true

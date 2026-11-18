@@ -113,45 +113,51 @@
 [Architectury Transformer DEBUG]  - E:\helloyhc\Mien\Mien\MinecraftMod\.gradle\loom-cache\remapped_mods\remapped\net\fabricmc\fabric-api\fabric-resource-loader-v0-0ef0546b\1.3.1+5b5275af19\fabric-resource-loader-v0-0ef0546b-1.3.1+5b5275af19.jar
 [Architectury Transformer DEBUG]  - E:\helloyhc\Mien\Mien\MinecraftMod\.gradle\loom-cache\remapped_mods\remapped\net\fabricmc\fabric-api\fabric-sound-api-v1-0ef0546b\1.0.23+6573ed8c19\fabric-sound-api-v1-0ef0546b-1.0.23+6573ed8c19.jar
 [Architectury Transformer DEBUG]  - E:\helloyhc\Mien\Mien\MinecraftMod\.gradle\loom-cache\remapped_mods\remapped\net\fabricmc\fabric-api\fabric-transitive-access-wideners-v1-0ef0546b\6.2.0+45b9699719\fabric-transitive-access-wideners-v1-0ef0546b-6.2.0+45b9699719.jar
-[Architectury Transformer] Read classpath in 2.697 s
+[Architectury Transformer] Read classpath in 1.456 s
 [Architectury Transformer DEBUG] Closed File Systems for E:\helloyhc\Mien\Mien\MinecraftMod\common\build\devlibs\mien-common-1.0.0-dev.jar
-[Architectury Transformer DEBUG] Transforming 5 transformer(s) from E:\helloyhc\Mien\Mien\MinecraftMod\common\build\devlibs\mien-common-1.0.0-dev.jar to C:\Users\ADMINI~1\AppData\Local\Temp\13076126173835259044.jar: 
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RuntimeMixinRefmapDetector@536aaa8d
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.GenerateFakeFabricMod@e320068
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformExpectPlatform@1f57539
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RemapInjectables@76f2b07d
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformPlatformOnly@704a52ec
-[Architectury Transformer DEBUG] Transforming from E:\helloyhc\Mien\Mien\MinecraftMod\common\build\devlibs\mien-common-1.0.0-dev.jar to C:\Users\ADMINI~1\AppData\Local\Temp\13076126173835259044.jar with 5 transformer(s) on dev.architectury.transformer.handler.SimpleTransformerHandler
+[Architectury Transformer DEBUG] Transforming 5 transformer(s) from E:\helloyhc\Mien\Mien\MinecraftMod\common\build\devlibs\mien-common-1.0.0-dev.jar to C:\Users\ADMINI~1\AppData\Local\Temp\9356845671753470488.jar: 
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RuntimeMixinRefmapDetector@57e1b0c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.GenerateFakeFabricMod@4232c52b
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformExpectPlatform@1877ab81
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RemapInjectables@305fd85d
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformPlatformOnly@458c1321
+[Architectury Transformer DEBUG] Transforming from E:\helloyhc\Mien\Mien\MinecraftMod\common\build\devlibs\mien-common-1.0.0-dev.jar to C:\Users\ADMINI~1\AppData\Local\Temp\9356845671753470488.jar with 5 transformer(s) on dev.architectury.transformer.handler.SimpleTransformerHandler
 [Architectury Transformer DEBUG] Found class transformer
+[Architectury Transformer DEBUG] Writing com/mien/mod/AnimationStateMachine$TriggerMode with maxs=true frames=true
+[Architectury Transformer DEBUG] Writing com/mien/mod/AnimationStateMachine with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing com/mien/mod/ExampleMod with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienConfig$FaceData with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienConfig$StateData with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienConfig with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienRenderHelper with maxs=true frames=true
 [Architectury Transformer DEBUG] Checking whether /mien.mixins.json is a mixin config.
-[Architectury Transformer DEBUG] Closed File Systems for C:\Users\ADMINI~1\AppData\Local\Temp\13076126173835259044.jar
+[Architectury Transformer DEBUG] Closed File Systems for C:\Users\ADMINI~1\AppData\Local\Temp\9356845671753470488.jar
 [Architectury Transformer] Listening at E:\helloyhc\Mien\Mien\MinecraftMod\common\build\devlibs\mien-common-1.0.0-dev.jar
-[Architectury Transformer DEBUG] Temporary jar [C:\Users\ADMINI~1\AppData\Local\Temp\13076126173835259044.jar] contains packages: com.mien.mod
+[Architectury Transformer DEBUG] Temporary jar [C:\Users\ADMINI~1\AppData\Local\Temp\9356845671753470488.jar] contains packages: com.mien.mod
 [Architectury Transformer DEBUG] Closed File Systems for E:\helloyhc\Mien\Mien\MinecraftMod\common\build\devlibs\mien-common-1.0.0-dev.jar
 [Architectury Transformer DEBUG] Classpath entry [E:\helloyhc\Mien\Mien\MinecraftMod\fabric\build\classes\java\main] contains packages: com.mien.mod.fabric, com.mien.mod.fabric.client
 [Architectury Transformer DEBUG] Classpath entry [E:\helloyhc\Mien\Mien\MinecraftMod\fabric\build\resources\main] contains packages: 
 [Architectury Transformer DEBUG] Transforming from com/mien/mod/ExampleMod.class to com/mien/mod/ExampleMod.class with 5 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
 [Architectury Transformer DEBUG] Found class transformer
 [Architectury Transformer DEBUG] Writing com/mien/mod/ExampleMod with maxs=true frames=true
-[Architectury Transformer DEBUG] Transformed com/mien/mod/ExampleMod in 5.437 ms
+[Architectury Transformer DEBUG] Transformed com/mien/mod/ExampleMod in 3.228 ms
 [Architectury Transformer DEBUG] Transforming from com/mien/mod/MienRenderHelper.class to com/mien/mod/MienRenderHelper.class with 5 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
 [Architectury Transformer DEBUG] Found class transformer
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienRenderHelper with maxs=true frames=true
-[Architectury Transformer DEBUG] Transformed com/mien/mod/MienRenderHelper in 4.158 ms
+[Architectury Transformer DEBUG] Transformed com/mien/mod/MienRenderHelper in 4.229 ms
 [Architectury Transformer DEBUG] Transforming from com/mien/mod/MienConfig.class to com/mien/mod/MienConfig.class with 5 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
 [Architectury Transformer DEBUG] Found class transformer
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienConfig with maxs=true frames=true
-[Architectury Transformer DEBUG] Transformed com/mien/mod/MienConfig in 4.265 ms
+[Architectury Transformer DEBUG] Transformed com/mien/mod/MienConfig in 3.538 ms
 [Architectury Transformer DEBUG] Transforming from com/mien/mod/MienConfig$FaceData.class to com/mien/mod/MienConfig$FaceData.class with 5 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
 [Architectury Transformer DEBUG] Found class transformer
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienConfig$FaceData with maxs=true frames=true
-[Architectury Transformer DEBUG] Transformed com/mien/mod/MienConfig$FaceData in 640.8 μs
+[Architectury Transformer DEBUG] Transformed com/mien/mod/MienConfig$FaceData in 574.8 μs
 [Architectury Transformer DEBUG] Transforming from com/mien/mod/MienConfig$StateData.class to com/mien/mod/MienConfig$StateData.class with 5 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
 [Architectury Transformer DEBUG] Found class transformer
 [Architectury Transformer DEBUG] Writing com/mien/mod/MienConfig$StateData with maxs=true frames=true
-[Architectury Transformer DEBUG] Transformed com/mien/mod/MienConfig$StateData in 739.6 μs
+[Architectury Transformer DEBUG] Transformed com/mien/mod/MienConfig$StateData in 521.7 μs
+[Architectury Transformer DEBUG] Transforming from com/mien/mod/AnimationStateMachine.class to com/mien/mod/AnimationStateMachine.class with 5 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
+[Architectury Transformer DEBUG] Found class transformer
+[Architectury Transformer DEBUG] Writing com/mien/mod/AnimationStateMachine with maxs=true frames=true
+[Architectury Transformer DEBUG] Transformed com/mien/mod/AnimationStateMachine in 1.930 ms

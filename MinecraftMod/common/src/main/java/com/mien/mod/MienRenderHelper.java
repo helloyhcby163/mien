@@ -33,6 +33,17 @@ public final class MienRenderHelper {
     }
 
     /**
+     * 取出某个状态在 JSON 中专属的 x / y / w / h 等参数，状态不存在时返回 null。
+     */
+    public static MienConfig.StateData getStateData(String state) {
+        MienConfig config = MienConfig.getInstance();
+        if (config == null || config.states == null) {
+            return null;
+        }
+        return config.states.get(state);
+    }
+
+    /**
      * 检查贴图是否真实存在（结果缓存），缺失时打印一次实际拼接出的路径。
      */
     public static boolean hasMouthTexture(MinecraftClient minecraftClient, String state) {
@@ -62,17 +73,16 @@ public final class MienRenderHelper {
         int previewX = drawContext.getScaledWindowWidth() - previewSize - PREVIEW_MARGIN;
         int previewY = drawContext.getScaledWindowHeight() - previewSize - PREVIEW_MARGIN;
 
-        renderFaceAndMouth(drawContext, minecraftClient, previewX, previewY, previewSize, currentState,
-                config.mouth_offset_x, config.mouth_offset_y, config.getMouthScale());
+        renderFaceAndMouth(drawContext, minecraftClient, previewX, previewY, previewSize, currentState);
     }
 
     /**
-     * 在指定位置绘制放大版脸部与当前嘴巴贴图。
-     * 偏移量以皮肤脸部像素为单位，缩放围绕脸部中心。
+     * 在指定位置绘制放大版脸部与当前状态的嘴巴。
+     * 嘴巴使用 StateData 里的 x / y（64x64 皮肤空间中的中心）与 w / h（皮肤像素尺寸）定位，
+     * 整张 256x256 嘴巴画布被拉伸到该框内，并裁剪在脸部预览区域内，避免溢出到黑边。
      */
     public static void renderFaceAndMouth(DrawContext drawContext, MinecraftClient minecraftClient,
-                                          int previewX, int previewY, int previewSize, String state,
-                                          float offsetX, float offsetY, float scale) {
+                                          int previewX, int previewY, int previewSize, String state) {
         MienConfig config = MienConfig.getInstance();
         if (config == null || config.face == null || minecraftClient.player == null) {
             return;
@@ -82,6 +92,9 @@ public final class MienRenderHelper {
         if (skin == null) {
             return;
         }
+
+        // 脸部预览区域就是裁剪区域，嘴巴不允许溢出到脸部之外。
+        drawContext.enableScissor(previewX, previewY, previewX + previewSize, previewY + previewSize);
 
         // 脸部皮肤预览。
         drawContext.drawTexture(
@@ -93,25 +106,28 @@ public final class MienRenderHelper {
                 SKIN_TEXTURE_SIZE, SKIN_TEXTURE_SIZE
         );
 
-        // 叠加当前状态的嘴巴贴图（贴图为 256x256 的整脸画布，带透明背景）。
-        if (!hasMouthTexture(minecraftClient, state)) {
+        MienConfig.StateData stateData = getStateData(state);
+        if (stateData == null || !hasMouthTexture(minecraftClient, state)) {
+            drawContext.disableScissor();
             return;
         }
 
         float pixelScale = previewSize / (float) config.face.size;
-        int mouthSize = Math.round(previewSize * scale);
-        int centerX = previewX + previewSize / 2 + Math.round(offsetX * pixelScale);
-        int centerY = previewY + previewSize / 2 + Math.round(offsetY * pixelScale);
-        int mouthX = centerX - mouthSize / 2;
-        int mouthY = centerY - mouthSize / 2;
+        int boxWidth = Math.max(1, Math.round(stateData.w * pixelScale));
+        int boxHeight = Math.max(1, Math.round(stateData.h * pixelScale));
+        int centerX = previewX + Math.round((stateData.x - config.face.x) * pixelScale);
+        int centerY = previewY + Math.round((stateData.y - config.face.y) * pixelScale);
 
+        // 贴图 256x256 以嘴巴为中心，整张画布拉伸到 w x h 的框里（与 Python 生成时的比例一致）。
         drawContext.drawTexture(
                 getMouthTexture(state),
-                mouthX, mouthY,
-                mouthSize, mouthSize,
+                centerX - boxWidth / 2, centerY - boxHeight / 2,
+                boxWidth, boxHeight,
                 0.0F, 0.0F,
                 MOUTH_TEXTURE_SIZE, MOUTH_TEXTURE_SIZE,
                 MOUTH_TEXTURE_SIZE, MOUTH_TEXTURE_SIZE
         );
+
+        drawContext.disableScissor();
     }
 }
