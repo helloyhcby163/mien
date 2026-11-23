@@ -10,8 +10,9 @@
           <set>
             <option value="$PROJECT_DIR$/MinecraftMod" />
             <option value="$PROJECT_DIR$/MinecraftMod/common" />
-            <option value="$PROJECT_DIR$/MinecraftMod/fabric" />
-            <option value="$PROJECT_DIR$/MinecraftMod/neoforge" />
+            <option value="$PROJECT_DIR$/MinecraftMod/targets" />
+            <option value="$PROJECT_DIR$/MinecraftMod/targets/fabric-1.21.1" />
+            <option value="$PROJECT_DIR$/MinecraftMod/targets/neoforge-1.21.1" />
           </set>
         </option>
       </GradleProjectSettings>

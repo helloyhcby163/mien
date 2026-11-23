@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="mien.fabric" target="21" />
+      <module name="mien.fabric.main" target="21" />
+      <module name="mien.fabric.test" target="21" />
+      <module name="mien.neoforge" target="21" />
+      <module name="mien.neoforge.main" target="21" />
+      <module name="mien.neoforge.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

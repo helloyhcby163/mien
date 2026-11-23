@@ -1,0 +1,84 @@
+plugins {
+    id 'com.gradleup.shadow'
+    id 'dev.architectury.loom'
+    id 'architectury-plugin'
+}
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+// 目录名带版本号，构建产物仍保持旧的 mien-neoforge 命名。
+base {
+    archivesName = 'mien-neoforge'
+}
+
+loom {
+    // common 的类与资源（贴图 / default_config.json / mixins）必须并入 mien 这个 mod 的根路径，
+    // 否则 dev 运行时资源加载器看不到 common 里的 assets，贴图会全部缺失。
+    mods {
+        mien {
+            sourceSet sourceSets.main
+            sourceSet 'main', project(':common')
+        }
+    }
+
+    runs {
+        client {
+            // Java 24+ 对 sun.misc.Unsafe 内存访问发出终端弃用警告（Gson 等库触发），
+            // 这里按官方提示放行，避免启动日志出现警告；低版本 JVM 不认识该参数，直接跳过。
+            if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_24)) {
+                vmArgs "--sun-misc-unsafe-memory-access=allow"
+            }
+        }
+    }
+}
+
+configurations {
+    // 需要被打进最终 jar 的 common 内容。
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+repositories {
+    maven {
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases'
+    }
+}
+
+dependencies {
+    minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+    mappings loom.layered {
+        it.mappings("net.fabricmc:yarn:$rootProject.yarn_mappings:v2")
+        it.mappings("dev.architectury:yarn-mappings-patch-neoforge:$rootProject.yarn_mappings_patch_neoforge_version")
+    }
+
+    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+
+    // Architectury API. This is optional, and you can comment it out if you don't need it.
+    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
+
+    implementation project(':common')
+    shadowBundle project(':common')
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand version: inputs.properties.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    inputFile.set shadowJar.archiveFile
+}

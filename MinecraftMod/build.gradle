@@ -14,18 +14,15 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'dev.architectury.loom'
-    apply plugin: 'architectury-plugin'
+    // :targets 只是 targets/fabric-1.21.1 等项目的中间容器，本身没有构建内容。
+    if (project.name == 'targets') {
+        return
+    }
+
+    apply plugin: 'java'
     apply plugin: 'maven-publish'
 
-    base {
-        // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name"
-    }
     repositories {
-        //repositories.clear() // 必须在最前面！
-
-        // 然后手动添加可用的仓库
         maven { url = "https://neoforged.forgecdn.net/releases" }
         maven { url = "https://neoforged.forgecdn.net/mojang-meta" }
         maven { url = "https://libraries.minecraft.net/" }
@@ -33,14 +30,6 @@ subprojects {
         maven { url = "https://maven.aliyun.com/repository/public" }
         maven { url = "https://maven.fabricmc.net/" }
         maven { url = "https://maven.architectury.dev/" }
-    }
-
-    dependencies {
-        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
-        mappings loom.layered {
-            it.mappings("net.fabricmc:yarn:$rootProject.yarn_mappings:v2")
-            it.mappings("dev.architectury:yarn-mappings-patch-neoforge:$rootProject.yarn_mappings_patch_neoforge_version")
-        }
     }
 
     java {
@@ -64,14 +53,6 @@ subprojects {
                 artifactId = base.archivesName.get()
                 from components.java
             }
-        }
-
-        // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-        repositories {
-            // Add repositories to publish to here.
-            // Notice: This block does NOT have the same function as the block in the top level.
-            // The repositories here will be used for publishing your artifact, not for
-            // retrieving dependencies.
         }
     }
 }

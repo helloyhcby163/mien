@@ -1,0 +1,18 @@
+{
+  "projectPath": ":common",
+  "classpaths": {
+    "test": [
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\build\\classes\\java\\test",
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\build\\resources\\test",
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\out\\test\\classes",
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\out\\test\\resources"
+    ],
+    "main": [
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\build\\classes\\java\\main",
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\build\\resources\\main",
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\build\\libs\\mien-common-1.0.0.jar",
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\out\\production\\classes",
+      "E:\\helloyhc\\Mien\\Mien\\MinecraftMod\\common\\out\\production\\resources"
+    ]
+  }
+}

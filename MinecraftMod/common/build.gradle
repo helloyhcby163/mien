@@ -1,13 +1,13 @@
-architectury {
-    common rootProject.enabled_platforms.split(',')
+plugins {
+    id 'java-library'
+}
+
+base {
+    archivesName = 'mien-common'
 }
 
 dependencies {
-    // We depend on Fabric Loader here to use the Fabric @Environment annotations,
-    // which get remapped to the correct annotations on each platform.
-    // Do NOT use other classes from Fabric Loader.
-    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-
-    // Architectury API. This is optional, and you can comment it out if you don't need it.
-    modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+    // common 是纯 Java 逻辑，不依赖任何 Minecraft / 加载器 API。
+    // Gson 在游戏运行时由 Minecraft / NeoForge 自带，这里只需要编译期依赖。
+    compileOnly "com.google.code.gson:gson:2.10.1"
 }

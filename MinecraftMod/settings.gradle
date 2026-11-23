@@ -9,6 +9,12 @@ pluginManagement {
 
 rootProject.name = 'mien'
 
+def localProperties = new Properties()
+file('gradle.properties').withInputStream { localProperties.load(it) }
+
 include 'common'
-include 'fabric'
-include 'neoforge'
+
+// 每个启用的加载器对应一个 targets/<loader>-<minecraft_version> 子项目。
+for (String platform : localProperties.getProperty('enabled_platforms').split(',')) {
+    include "targets:${platform.trim()}-${localProperties.getProperty('minecraft_version')}"
+}
